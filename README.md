@@ -25,7 +25,7 @@ Build the portable host target on a supported Linux host and the first board tar
 
 ```sh
 west build -b native_sim -d app/build/native_sim app
-west build -b esp32c6_devkitc -d app/build/esp32c6_devkitc app
+west build -b esp32c6_devkitc/esp32c6/hpcore -d app/build/esp32c6_devkitc app
 ```
 
 The ESP32-C6 Wi-Fi/IEEE 802.15.4 path requires Espressif RF binary blobs. Their license and the fetch/build process must be reviewed before enabling connectivity or publishing firmware. The CI currently checks compilation only; it does not claim host simulation, board execution, radio, sensor, security, or portability validation.
