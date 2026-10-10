@@ -34,4 +34,4 @@ jobs:
         run: west build -b native_sim -d app/build/native_sim app
 
       - name: Build ESP32-C6-DevKitC
-        run: west build -b esp32c6_devkitc -d app/build/esp32c6_devkitc app
+        run: west build -b esp32c6_devkitc/esp32c6/hpcore -d app/build/esp32c6_devkitc app
