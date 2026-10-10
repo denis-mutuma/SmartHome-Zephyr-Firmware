@@ -14,8 +14,7 @@ Install Python 3 and Git, then install west:
 
 ```sh
 python -m pip install west
-mkdir firmware-workspace
-git clone https://github.com/denis-mutuma/SmartHome-Zephyr-Firmware.git firmware-workspace/app
+git clone https://github.com/denis-mutuma/SmartHome-Zephyr-Firmware.git firmware-workspace
 cd firmware-workspace
 west init -l app
 west update
