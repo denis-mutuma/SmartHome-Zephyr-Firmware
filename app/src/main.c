@@ -7,6 +7,8 @@
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
+#include "smarthome/temperature.h"
+
 #if DT_HAS_COMPAT_STATUS_OKAY(maxim_ds18b20)
 int main(void)
 {
@@ -28,16 +30,14 @@ int main(void)
         if (error < 0) {
             printk("DS18B20 unavailable: error %d\n", error);
         } else {
-            const int64_t micro_celsius =
-                (int64_t)temperature.val1 * 1000000 + temperature.val2;
-            const bool negative = micro_celsius < 0;
-            const int64_t magnitude = negative ? -micro_celsius : micro_celsius;
-
-            printk("DS18B20: %s%lld.%06lld C uptime_ms=%lld\n",
-                   negative ? "-" : "",
-                   (long long)(magnitude / 1000000),
-                   (long long)(magnitude % 1000000),
-                   (long long)k_uptime_get());
+            char formatted_temperature[32];
+            const int formatted_length = smarthome_format_temperature_celsius(
+                formatted_temperature, sizeof(formatted_temperature), &temperature);
+            if (formatted_length < 0 || (size_t)formatted_length >= sizeof(formatted_temperature)) {
+                printk("DS18B20 unavailable: formatting error %d\n", formatted_length);
+            } else {
+                printk("DS18B20: %s C uptime_ms=%lld\n", formatted_temperature, (long long)k_uptime_get());
+            }
         }
 
         k_sleep(K_SECONDS(60));
