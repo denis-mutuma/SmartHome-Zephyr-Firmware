@@ -6,7 +6,7 @@ Board-neutral Zephyr firmware evaluation project. The ESP32-C6-DevKitC-1 is the 
 
 The application reads one DS18B20 through Zephyr's UART-backed 1-Wire sensor driver on the ESP32-C6-DevKitC target. Other targets without a configured sensor retain the startup-only path. The reading is reported as signed microdegrees Celsius with a monotonic uptime observation time; sensor errors are reported as unavailable, not as a value. No network or relay behavior is implemented, and no mains wiring is part of this project.
 
-The C6 overlay assigns UART1 RX to GPIO3 and TX to GPIO11. Zephyr's UART-backed 1-Wire driver is experimental and requires an external open-drain interface. Do not connect the sensor's data line directly to the UART pins. No physical wiring, sensor read, or electrical behavior has been validated; the board build only checks compilation and devicetree configuration.
+The C6 overlay assigns UART1 TX to GPIO2 (J1 pin 12) and RX to GPIO3 (J1 pin 13), leaving GPIO11 (J1 pin 11) available for the external LED. The firmware does not configure or toggle that LED yet. C6 GPIOs are 3.3-V-only; do not apply a 5-V LED/module signal directly, and confirm the LED's current limiting and polarity before enabling it. Zephyr's UART-backed 1-Wire driver is experimental and requires an external open-drain interface; do not connect the DS18B20 data line directly to the UART pins. No physical wiring, sensor read, or electrical behavior has been validated; the board build only checks compilation and devicetree configuration.
 
 The project license is undecided. Do not redistribute or assume reuse rights for this repository, binaries, or upstream Espressif radio blobs until their terms and provenance have been reviewed.
 
