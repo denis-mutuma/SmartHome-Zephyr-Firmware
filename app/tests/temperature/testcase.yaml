@@ -1,0 +1,6 @@
+tests:
+  smarthome.temperature.formatting:
+    tags: smarthome sensor
+    harness: ztest
+    integration_platforms:
+      - native_sim
