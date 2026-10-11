@@ -30,13 +30,11 @@ int main(void)
         if (error < 0) {
             printk("DS18B20 unavailable: error %d\n", error);
         } else {
-            char formatted_temperature[32];
-            const int formatted_length = smarthome_format_temperature_celsius(
-                formatted_temperature, sizeof(formatted_temperature), &temperature);
-            if (formatted_length < 0 || (size_t)formatted_length >= sizeof(formatted_temperature)) {
-                printk("DS18B20 unavailable: formatting error %d\n", formatted_length);
+            int64_t micro_celsius;
+            if (!smarthome_temperature_to_micro_celsius(&temperature, &micro_celsius)) {
+                printk("DS18B20 unavailable: conversion error\n");
             } else {
-                printk("DS18B20: %s C uptime_ms=%lld\n", formatted_temperature, (long long)k_uptime_get());
+                printk("DS18B20: %lld micro-C uptime_ms=%lld\n", (long long)micro_celsius, (long long)k_uptime_get());
             }
         }
 
