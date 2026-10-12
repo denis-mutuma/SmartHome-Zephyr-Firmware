@@ -3,15 +3,37 @@
 
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
+#include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
 #include "smarthome/temperature.h"
 
+#if DT_HAS_ALIAS(status_led0)
+#define STATUS_LED_NODE DT_ALIAS(status_led0)
+static const struct gpio_dt_spec status_led = GPIO_DT_SPEC_GET(STATUS_LED_NODE, gpios);
+#endif
+
+static void initialize_status_led(void)
+{
+#if DT_HAS_ALIAS(status_led0)
+    if (!gpio_is_ready_dt(&status_led)) {
+        printk("Status LED unavailable: GPIO device not ready\n");
+        return;
+    }
+
+    const int error = gpio_pin_configure_dt(&status_led, GPIO_OUTPUT_INACTIVE);
+    if (error < 0) {
+        printk("Status LED unavailable: GPIO configuration error %d\n", error);
+    }
+#endif
+}
+
 #if DT_HAS_COMPAT_STATUS_OKAY(maxim_ds18b20)
 int main(void)
 {
+    initialize_status_led();
     printk("SmartHome firmware booted\n");
 
     const struct device *sensor = DEVICE_DT_GET(DT_NODELABEL(ds18b20));
@@ -44,6 +66,7 @@ int main(void)
 #else
 int main(void)
 {
+    initialize_status_led();
     printk("SmartHome firmware booted\n");
     return 0;
 }
