@@ -38,5 +38,10 @@ jobs:
           west build -b native_sim -d app/build/temperature_tests app/tests/temperature
           app/build/temperature_tests/zephyr/zephyr.exe
 
+      - name: Run status LED initialization test
+        run: |
+          west build -b native_sim -d app/build/status_led_tests app/tests/status_led
+          app/build/status_led_tests/zephyr/zephyr.exe
+
       - name: Build ESP32-C6-DevKitC
         run: west build -b esp32c6_devkitc/esp32c6/hpcore -d app/build/esp32c6_devkitc app

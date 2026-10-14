@@ -1,0 +1,6 @@
+tests:
+  smarthome.status_led.initial_state:
+    tags: smarthome gpio
+    harness: ztest
+    integration_platforms:
+      - native_sim

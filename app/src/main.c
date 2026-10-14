@@ -8,6 +8,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
+#include "smarthome/status_led.h"
 #include "smarthome/temperature.h"
 
 #if DT_HAS_ALIAS(status_led0)
@@ -23,7 +24,7 @@ static void initialize_status_led(void)
         return;
     }
 
-    const int error = gpio_pin_configure_dt(&status_led, GPIO_OUTPUT_INACTIVE);
+    const int error = smarthome_status_led_configure_inactive(&status_led);
     if (error < 0) {
         printk("Status LED unavailable: GPIO configuration error %d\n", error);
     }
