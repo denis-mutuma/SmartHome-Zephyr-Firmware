@@ -5,18 +5,10 @@
 		status-led0 = &status_led0;
 	};
 
-	gpio_emulator: gpio-emul {
-		compatible = "zephyr,gpio-emul";
-		status = "okay";
-		gpio-controller;
-		#gpio-cells = <2>;
-		ngpios = <1>;
-	};
-
 	leds {
 		compatible = "gpio-leds";
 		status_led0: status_led_0 {
-			gpios = <&gpio_emulator 0 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };
